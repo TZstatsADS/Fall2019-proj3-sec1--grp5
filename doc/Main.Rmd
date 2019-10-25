@@ -47,7 +47,7 @@ library(caret)
 ### Step 0 set work directories, extract paths, summarize
 ```{r wkdir, eval=FALSE}
 set.seed(0)
-setwd("~/Project3-FacialEmotionRecognition/doc")
+setwd("C:/Users/wwyws/OneDrive/Documents/Columbia/STAT5243 Applied Data Science/Fall2019-proj3-sec1--grp5/doc")
 # here replace it with your own path or manually set it in RStudio to where this rmd file is located. 
 # use relative path for reproducibility
 ```
