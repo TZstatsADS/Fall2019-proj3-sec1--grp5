@@ -10,31 +10,31 @@ In your final repo, there should be an R markdown file that organizes **all comp
 This file is currently a template for running evaluation experiments. You should update it according to your codes but following precisely the same structure. 
 
 ```{r message=FALSE}
-if(!require("EBImage")){
-  source("https://bioconductor.org/biocLite.R")
-  biocLite("EBImage")
-}
-if(!require("R.matlab")){
-  install.packages("R.matlab")
-}
-if(!require("readxl")){
-  install.packages("readxl")
-}
-
-if(!require("dplyr")){
-  install.packages("dplyr")
-}
-if(!require("readxl")){
-  install.packages("readxl")
-}
-
-if(!require("ggplot2")){
-  install.packages("ggplot2")
-}
-
-if(!require("caret")){
-  install.packages("caret")
-}
+# if(!require("EBImage")){
+#   source("https://bioconductor.org/biocLite.R")
+#   biocLite("EBImage")
+# }
+# if(!require("R.matlab")){
+#   install.packages("R.matlab")
+# }
+# if(!require("readxl")){
+#   install.packages("readxl")
+# }
+# 
+# if(!require("dplyr")){
+#   install.packages("dplyr")
+# }
+# if(!require("readxl")){
+#   install.packages("readxl")
+# }
+# 
+# if(!require("ggplot2")){
+#   install.packages("ggplot2")
+# }
+# 
+# if(!require("caret")){
+#   install.packages("caret")
+# }
 
 library(R.matlab)
 library(readxl)
@@ -47,7 +47,7 @@ library(caret)
 ### Step 0 set work directories, extract paths, summarize
 ```{r wkdir, eval=FALSE}
 set.seed(0)
-setwd("C:/Users/wwyws/OneDrive/Documents/Columbia/STAT5243 Applied Data Science/Fall2019-proj3-sec1--grp5/doc")
+# setwd("C:/Users/wwyws/OneDrive/Documents/Columbia/STAT5243 Applied Data Science/Fall2019-proj3-sec1--grp5/doc")
 # here replace it with your own path or manually set it in RStudio to where this rmd file is located. 
 # use relative path for reproducibility
 ```
