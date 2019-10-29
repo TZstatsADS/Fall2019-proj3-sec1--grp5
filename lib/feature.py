@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy.spatial.distance import pdist
+from sklearn.metrics import pairwise_distances
 #default feature function
 def feature(fiducial_pt_list,index,info):
     def pairwise_dist(mat):
@@ -16,22 +17,38 @@ def feature(fiducial_pt_list,index,info):
     return pairwise_dist_result
 
 
-#
-#index = [1,3,5]    
-#
-#info[info.index[index],'emotion_idx']
-#a = fiducial_pt_list[0].copy(deep = True)
-#b[0].insert(2,2, [0]*b[0].shape[0],allow_duplicates = True)
-#
-#a[[0,3]]
-#
-#info.iloc['emotion_idx']
-#
-#b = pdist(a.iloc[:,[0,2]])
-#
-#df = pd.DataFrame({'a': ['1', '2'], 
-#                       'b': ['45.0', '73.0'],
-#                       'c': [10.0, 3.0]})
-# = df.apply(pd.to_numeric)
-#
-#c = b.apply(pd.DataFrame.astype,dtype = 'int64')
+
+def feature_slope(mat_list, nfidu = 78):
+    def pairwise_dist(vec):
+        a = pairwise_distances(vec.reshape(nfidu,1))
+        return(a[np.triu_indices(nfidu, k = 1)])
+    
+    def pairwise_dist_result(mat):
+        a = np.apply_along_axis(pairwise_dist, 0, mat)
+        return(np.rad2deg(np.arctan2(a[:,1], a[:,0]))) 
+     
+    feature_mat = [pairwise_dist_result(mat) for mat in mat_list]   
+    return(np.vstack(feature_mat))
+
+def feature_dist_slope(fiducial_pt_list,info):
+    def pairwise_dist_slope(mat):
+        mat = pd.DataFrame(mat)
+        #distance between points
+        dist_result =  pdist(mat)
+        
+        #slope between points
+        mat.insert(2,2, [0]*mat.shape[0],allow_duplicates = True)
+        vec1 = pdist(mat.iloc[:,[0,2]])    
+        vec2 = pdist(mat.iloc[:,[1,2]])
+        a = np.column_stack((vec1,vec2))
+        slope_result = np.rad2deg(np.arctan2(a[:,1], a[:,0]))
+
+        return np.r_[dist_result,slope_result]
+    
+    
+    result = pd.DataFrame(map(pairwise_dist_slope,[fiducial_pt_list[i] for i in range(0,len(fiducial_pt_list))]))
+    result.insert(len(result.columns),'emotion_idx', value = list(info['emotion_idx'][list(range(0,len(fiducial_pt_list)))]))
+    
+    result.columns = ['feature%s' % i for i in list(range(1,len(result.columns)))] + ['emotion_idx']
+    return(result)
+    
