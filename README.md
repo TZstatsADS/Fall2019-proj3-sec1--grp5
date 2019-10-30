@@ -26,7 +26,7 @@ Weunyue We built the baseline GBM model and the XGBoost model. He also tuned the
 
 Kangkang Zhang developed the Feature Extraction algorithm and worked on the SVM model. She also tuned the hyperparameters of the SVM model.
 
-Na Zhuo developed the Random Forest model and tuned the hyperparameters of this model.
+Na Zhuo developed the Random Forest model and tuned the hyperparameters of this model. She also tried the baseline model on R. 
 
 
 
