@@ -310,11 +310,56 @@ lgb_accuracy  = accuracy_score(y_test_new,lgb_prediction)
 
 
 
+baseGBM = GradientBoostingClassifier(random_state=rand_seed,max_depth = 1)
+startTime = time.time()
+baseGBM.fit(X_train, y_train)
+endTime= time.time()-startTime
+baseGBM_prediction = baseGBM.predict(X_test)
+baseGBM_accuracy = accuracy_score(y_test,baseGBM_prediction)
+
+#save/load output
+baseGBMOut = {'Model':baseGBM, 'accuracy':baseGBM_accuracy,'Time':endTime}
+f = open('../output/baseGBMOut', 'wb')
+pickle.dump(baseGBMOut, f)
+f.close()
 
 
 
+#baseGBM = GradientBoostingClassifier(random_state=rand_seed,max_depth = 1)
+#startTime = time.time()
+#baseGBM.fit(X_train, y_train)
+#endTime= time.time()-startTime
+#baseGBM_prediction = baseGBM.predict(X_test)
+#baseGBM_accuracy = accuracy_score(y_test,baseGBM_prediction)
+#
+##save/load output
+#baseGBMOut = {'Model':baseGBM, 'accuracy':baseGBM_accuracy,'Time':endTime}
+#f = open('../output/baseGBMOut', 'wb')
+#pickle.dump(baseGBMOut, f)
+#f.close()
 
 
+xgb1 = xgboost.XGBClassifier(
+    colsample_bytree = 1, ##different from 0.8 for now
+    gamma = 0,
+    learning_rate = 0.1,
+    max_depth =3, ##different from 5 for now
+    min_child_weight = 1,
+    n_estimators = 1000,
+    objective = 'multi:softmax',
+    scale_pos_weight = 1,
+    random_state = rand_seed,
+    subsample = 1,  ##different from 0.8 for now
+    num_class = 22,
+    nthread = 6
+)
 
 
+xgb_param = xgb1.get_xgb_params()
+xgtrain = xgboost.DMatrix(X_train, label=y_train-1)
+
+startTime = time.time() 
+cvresult = xgboost.cv(xgb_param, xgtrain, num_boost_round=xgb1.get_params()['n_estimators'], nfold=cv_folds,
+            metrics = 'mlogloss',early_stopping_rounds=50)
+print("CV Time Is: " + str(time.time()-startTime))
 
