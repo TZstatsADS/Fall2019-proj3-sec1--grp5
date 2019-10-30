@@ -52,3 +52,6 @@ def feature_dist_slope(fiducial_pt_list,info):
     result.columns = ['feature%s' % i for i in list(range(1,len(result.columns)))] + ['emotion_idx']
     return(result)
     
+def feature_distance(mat_list, nfidu = 78):
+    def pairwise_dist(vec):
+
