@@ -19,8 +19,9 @@ from sklearn.decomposition import PCA
 
 
 #import custom defined functions
-os.chdir('H:/Personal/Columbia/STAT 5243 Applied Data Science/Fall2019-proj3-sec1--grp5/doc')
+#os.chdir('H:/Personal/Columbia/STAT 5243 Applied Data Science/Fall2019-proj3-sec1--grp5/doc')
 #os.chdir('D:/wwyws/Documents/Columbia/STAT5243 Applied Data Science/Fall2019-proj3-sec1--grp5/doc')
+os.chdir('C:/Users/wwyws/OneDrive/Documents/Columbia/STAT5243 Applied Data Science/Fall2019-proj3-sec1--grp5/output')
 sys.path.append("..")
 import lib.feature as ft
 
@@ -223,6 +224,30 @@ print("XGBOOST Fit Time Is: " + str(time.time()-startTime))
 xgb_prediction = xgb1.predict(X_test)
 xgb_accuracy  = accuracy_score(y_test,xgb_prediction) #increased to 0.49
 
+
+xgb_tuned = xgboost.XGBClassifier(
+    colsample_bytree = 0.8,
+    gamma = 0,
+    learning_rate = 0.1,
+    max_depth =5,
+    min_child_weight = 4,
+    n_estimators = 115,
+    objective = 'multi:softmax',
+    scale_pos_weight = 1,
+    random_state = rand_seed,
+    subsample = 0.8,
+    num_class = 22,
+    nthread = num_cores
+)
+
+
+xgb_param = xgb_tuned.get_xgb_params()
+xgtrain = xgboost.DMatrix(X_train, label=y_train-1)
+
+startTime = time.time() 
+cvresult = xgboost.cv(xgb_param, xgtrain, num_boost_round=1000, nfold=cv_folds,
+            metrics = 'mlogloss',early_stopping_rounds=50)
+print("CV Time Is: " + str(time.time()-startTime))
 
 
 #%%lightgbm
