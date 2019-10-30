@@ -54,4 +54,13 @@ def feature_dist_slope(fiducial_pt_list,info):
     
 def feature_distance(mat_list, nfidu = 78):
     def pairwise_dist(vec):
+        a = pairwise_distances(vec.reshape(nfidu,1))
+        return(a[np.triu_indices(nfidu, k = 1)])
+    
+    def pairwise_dist_result(mat_list):
+        a = np.apply_along_axis(pairwise_dist, 0, mat_list)
+        return(a.flatten('F')) 
+     
+    feature_mat = [pairwise_dist_result(mat) for mat in mat_list]   
+    return(np.vstack(feature_mat))
 
